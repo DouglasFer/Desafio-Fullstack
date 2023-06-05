@@ -16,7 +16,7 @@ export const registerSchema = yup.object().shape({
     .min(8, "É necessário uma senha de pelos 8 Caracteres"),
   phone: yup
     .string()
-    .min(10)
+    .min(10, "O numero precisa ter pelo 10 digitos.")
     .required("Digite seu telefone"),
 });
 

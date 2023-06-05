@@ -64,7 +64,7 @@ export const FormRegister = () => {
       <label>Telefone</label>
       <input
         type="text"
-        placeholder="Digite seu telefone no formato '+55xxxxx-xxxx'"
+        placeholder="Digite seu telefone"
         {...register("phone")}
         disabled={loading}
       />
