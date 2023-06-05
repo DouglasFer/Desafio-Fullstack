@@ -19,7 +19,7 @@ export class CreateContactDto {
 
   readonly createdAt: Date;
 
-  @ApiProperty()
-  @IsString()
-  clientId?: string;
+  // @ApiProperty()
+  // @IsString()
+  // clientId?: string;
 }

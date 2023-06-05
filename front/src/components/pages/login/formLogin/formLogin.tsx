@@ -2,7 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useContext, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { UserContext } from "../../context/contextUser"; 
+import { UserContext } from "../../../context/contextUser"; 
 import { loginSchema } from "./loginSchema";
 import { FormLogin } from "./style";
 
@@ -26,7 +26,6 @@ export const Form = () => {
   
 
   const submit: SubmitHandler<iLoginFormValues> = (data) => {
-    console.log("=======", data)
     userLogin(data, setLoading);
   };
   return (

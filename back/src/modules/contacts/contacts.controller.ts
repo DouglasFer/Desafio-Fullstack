@@ -21,18 +21,21 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 export class ContactsController {
   constructor(private readonly contactService: ContactService) {}
 
-  @Post('')
+  @Post(':id')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  create(@Body() createContactDto: CreateContactDto) {
-    return this.contactService.create(createContactDto);
+  create(@Body() createContactDto: CreateContactDto, @Param('id') id: string) {
+    return this.contactService.create(createContactDto, id);
   }
 
-  @Get('')
+  @Get(':clientId')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  findAll(@Query('group') group: string | undefined) {
-    return this.contactService.findAll(group);
+  findAll(
+    @Query('group') group: string | undefined,
+    @Param('clientId') clientId: string,
+  ) {
+    return this.contactService.findAll(group, clientId);
   }
 
   @Get(':id')

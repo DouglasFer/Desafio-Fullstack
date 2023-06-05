@@ -17,5 +17,21 @@ export const registerSchema = yup.object().shape({
   phone: yup
     .string()
     .min(10)
-    .required("Digite seu telefone no formato '+55xxxxx-xxxx'"),
+    .required("Digite seu telefone"),
+});
+
+export const registerContactSchema = yup.object().shape({
+  fullName: yup
+    .string()
+    .required("O nome é obrigatório!")
+    .min(3, "O nome precisa ter pelo 3 caracteres.")
+    .max(200, "O nome pode ter no máximo 200 caracteres."),
+  email: yup
+    .string()
+    .required("O email é obrigatório!")
+    .email("É necessário fornecer um email."),
+  phone: yup
+    .string()
+    .min(10, "O numero precisa ter pelo 10 digitos.")
+    .required("Digite seu telefone"),
 });

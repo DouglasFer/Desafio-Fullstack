@@ -5,8 +5,8 @@ import { UserContext } from "../context/contextUser";
 export const ProtectedRoutes = () => {
   const { user, loading } = useContext(UserContext);
   const location = useLocation();
-  if (user) {
-    return null;
-  }
+  // if (loading) {
+  //   return null;
+  // }
   return user ? <Outlet /> : <Navigate to="/" state={{ from: location }} />;
 };

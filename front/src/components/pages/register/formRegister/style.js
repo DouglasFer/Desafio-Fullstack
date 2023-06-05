@@ -20,13 +20,13 @@ export const StyledFormRegister = styled.form`
       font-weight: 700;
       font-size: 18px;
       line-height: 24px;
-      color: var(--gray-1);
+      color: var(--gray-4);
     }
     a {
       font-weight: 500;
       font-size: 14px;
       line-height: 22px;
-      color: var(--gray-2);
+      color: var(--gray-4);
       text-decoration: underline;
     }
   }
@@ -41,10 +41,11 @@ export const StyledFormRegister = styled.form`
     font-weight: 400;
     font-size: 12px;
     line-height: 15px;
-    color: var(--gray-2);
-    margin-bottom: -22px;
+    color: var(--gray-1);
+    margin-bottom: -30px;
     z-index: 1;
     margin-left: 10px;
+    
   }
   p {
     font-weight: 400;

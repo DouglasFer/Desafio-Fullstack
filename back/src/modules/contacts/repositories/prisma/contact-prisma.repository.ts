@@ -10,7 +10,7 @@ import { Contact } from '../../entities/contact.entity';
 export class ContactPrismaRepository implements ContactRepository {
   constructor(private prisma: PrismaService) {}
 
-  async create(data: CreateContactDto): Promise<Contact> {
+  async create(data: CreateContactDto, id: string): Promise<Contact> {
     const contact = new Contact();
     Object.assign(contact, {
       ...data,
@@ -23,7 +23,7 @@ export class ContactPrismaRepository implements ContactRepository {
         email: contact.email,
         phone: contact.phone,
         createdAt: contact.createdAt,
-        clientId: contact.clientId,
+        clientId: id,
       },
     });
     return newContact;
@@ -43,8 +43,10 @@ export class ContactPrismaRepository implements ContactRepository {
     }, {});
   }
 
-  async findAll(group: string): Promise<object | Contact[]> {
-    const contacts = await this.prisma.contact.findMany();
+  async findAll(group: string, clientId: string): Promise<object | Contact[]> {
+    const contacts = await this.prisma.contact.findMany({
+      where: { clientId: clientId },
+    });
     if (group) {
       return this.groupby(contacts, group);
     }

@@ -1,12 +1,15 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { AxiosError } from "axios";
 import { api } from "../../services/api";
 import { iProviderProps, iRequestError } from "./@types";
-import { iRegisterFormValues } from "../register/formRegister/formRegister";
+import { iRegisterFormValues } from "../pages/register/formRegister/formRegister";
 import { createContext, useState } from "react";
-import { iLoginFormValues } from "../login/formLogin/formLogin"
+import { iLoginFormValues } from "../pages/login/formLogin/formLogin"
 import "react-toastify/dist/ReactToastify.css";
+import jwtDecode from "jwt-decode";
+import { AxiosError } from "axios";
+import { getTokenFromLocalStorage } from "../../localStorage/localStorage";
+
 
 export interface iRegisterResponse {
   message: string;
@@ -19,15 +22,17 @@ interface iUser {
 }
 interface iLoginResponse {
   user: iUser;
-  accessToken: string;
+  access_token: string;
 }
 
 export interface iUserContext {
   user: iUser | null;
   loading: boolean;
+  userLogged: any,
+  setUserLogged: any
   userLogin: (
     formData: iLoginFormValues,
-    setLoading: React.Dispatch<React.SetStateAction<boolean>>
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>,
   ) => void;
   userRegister: (
     formData: iRegisterFormValues,
@@ -40,6 +45,9 @@ export const UserContext = createContext({} as iUserContext);
 
 export const UserProvider = ({ children }: iProviderProps) => {
   const [user, setUser] = useState<iUser | null>(null);
+  
+  const [userLogged, setUserLogged] = useState([]);
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -49,12 +57,10 @@ export const UserProvider = ({ children }: iProviderProps) => {
     formData: iRegisterFormValues,
     setLoading: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
-    console.log(formData)
     try {
       setLoading(true);
       const response = await api.post<iRegisterResponse>("clients", formData);
-      console.log(response.data)
-      console.log(formData)
+      
       toast.success(response.data.message);
 
       if (response.status === 201) {
@@ -74,15 +80,28 @@ export const UserProvider = ({ children }: iProviderProps) => {
     formData: iLoginFormValues,
     setLoading: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
+
     try {
       setLoading(true);
       const response = await api.post<iLoginResponse>("login", formData);
-
+      
       if (response.status === 200) {
-        localStorage.setItem("@TOKEN", response.data.accessToken);
-        toast.success("Login Efetuado!");
+        const decoded: string | any = jwtDecode(response.data.access_token)
+        localStorage.setItem("@TOKEN", JSON.stringify(response.data.access_token));
 
-        setUser(response.data.user);
+
+        localStorage.setItem("@ClientId", JSON.stringify(decoded.sub));
+        toast.success("Login Efetuado!");
+        const tokenClient = response.data.access_token;
+
+        const clientLogin = await api.get(`clients/${decoded.sub}`,{
+          headers: {
+            Authorization: `Bearer ${tokenClient}`,
+          }, 
+        })
+        setUser(clientLogin.data);
+        
+        setUserLogged(clientLogin.data)
         const toNavigate = location.state?.from?.pathname || "/dashboard";
 
         navigate(toNavigate, { replace: true });
@@ -104,7 +123,7 @@ export const UserProvider = ({ children }: iProviderProps) => {
 
   return (
     <UserContext.Provider
-      value={{ user, userRegister, userLogin, userLogout, loading }}
+      value={{ user, userRegister, userLogin, userLogout, loading, userLogged, setUserLogged }}
     >
       {children}
     </UserContext.Provider>

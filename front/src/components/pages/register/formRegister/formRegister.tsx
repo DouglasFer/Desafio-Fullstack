@@ -4,7 +4,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { StyledFormRegister } from "./style";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "./formSchema";
-import { UserContext } from "../../context/contextUser";
+import { UserContext } from "../../../context/contextUser";
 
 export interface iRegisterFormValues {
   fullName: string;
@@ -27,8 +27,6 @@ export const FormRegister = () => {
   });
 
   const submit: SubmitHandler<iRegisterFormValues> = (data) => {
-    console.log(data)
-
     userRegister(data, setLoading);
     reset({
       fullName: "",

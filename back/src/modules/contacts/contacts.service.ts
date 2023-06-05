@@ -7,13 +7,13 @@ import { UpdateContactDto } from './dto/update-contact.dto';
 export class ContactService {
   constructor(private contactRepository: ContactRepository) {}
 
-  async create(createContactDto: CreateContactDto) {
-    const contact = await this.contactRepository.create(createContactDto);
+  async create(createContactDto: CreateContactDto, id: string) {
+    const contact = await this.contactRepository.create(createContactDto, id);
     return contact;
   }
 
-  async findAll(group: string | undefined) {
-    return this.contactRepository.findAll(group);
+  async findAll(group: string | undefined, clientId: string) {
+    return this.contactRepository.findAll(group, clientId);
   }
 
   async findOne(id: string) {

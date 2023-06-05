@@ -24,16 +24,14 @@ export const FormLogin = styled.form`
     font-size: 12px;
     line-height: 15px;
     color: var(--gray-2);
-    margin-bottom: -17px;
+    margin-bottom: -26px;
     position: inherit;
     z-index: 1;
-    width: 35px;
-    background-color: var(--gray-4);
     margin-left: 12px;
   }
 
   input {
-    height: 40px;
+    height: 50px;
     border: 2px solid var(--gray-1);
     border-radius: 8px;
     padding: 10px;

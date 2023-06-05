@@ -7,4 +7,5 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
   animation: animationModal 1s ease 0s 1 normal forwards;
+
 `;
